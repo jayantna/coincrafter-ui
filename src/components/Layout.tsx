@@ -51,7 +51,28 @@ const Layout = ({ children }: LayoutProps) => {
 
       {children}
 
-      <footer className={styles.footer + " mt-auto py-2 text-sm"}>Jayant Nagle</footer>
+      <footer className={styles.footer + " mt-auto py-2 text-sm text-gray-500"}>
+        <span>
+          Made by Jayant Nagle |{" "}
+          <a 
+            href="http://www.jayantdevhub.in" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="underline hover:text-purple-600"
+          >
+            Portfolio
+          </a>{" "}
+          |{" "}
+          <a 
+            href="https://github.com/jayantna"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-purple-600"
+          >
+            Github
+          </a>
+        </span>
+      </footer>
     </div>
   );
 };

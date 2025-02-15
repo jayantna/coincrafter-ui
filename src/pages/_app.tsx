@@ -13,7 +13,7 @@ const client = new QueryClient();
 
 const myCustomTheme: Theme = merge(lightTheme(), {
   colors: {
-    accentColor: 'linear-gradient(to top right, rgb(56, 189, 248), rgb(168, 85, 247), rgb(236, 72, 153))',
+    accentColor: 'linear-gradient(to right, rgb(88, 28, 135), rgb(219, 39, 119))',
   }
 } as Theme)
 
