@@ -70,6 +70,25 @@ const Layout = ({ children }: LayoutProps) => {
             className="underline hover:text-purple-600"
           >
             Github
+          </a>{" "}
+          |{" "}
+          <a 
+            href="https://www.linkedin.com/in/jayantn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-purple-600"
+          >
+            LinkedIn
+          </a>
+          {" "}
+          |{" "}
+          <a 
+            href="https://x.com/thejnbtc"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-purple-600"
+          >
+            X
           </a>
         </span>
       </footer>
