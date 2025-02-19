@@ -1,15 +1,38 @@
 import { useState } from "react";
 import Input from "./Input";
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccount } from "wagmi"
+import ErrorModal from './ErrorModal';
 
 const AppContent = () => {
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [tokenSupply, setTokenSupply] = useState("");
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { openConnectModal } = useConnectModal();
+  const account = useAccount();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if(account.status === 'disconnected') {
+      if (openConnectModal) {
+        openConnectModal();
+      }
+      return;
+    }
+    if (!tokenName || !tokenSymbol || !tokenSupply) {
+      setErrorMessage("All fields are required");
+      setIsErrorModalOpen(true);
+      return;
+    }
     console.log({ tokenName, tokenSymbol, tokenSupply });
   };
+
+  const handleMintButtonClick = () => {
+      
+  }
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
@@ -31,7 +54,6 @@ const AppContent = () => {
           value={tokenName}
           onChange={(e) => setTokenName(e.target.value)}
           placeholder="Enter token name"
-          required
         />
         <Input
           label="Token Symbol"
@@ -39,7 +61,6 @@ const AppContent = () => {
           value={tokenSymbol}
           onChange={(e) => setTokenSymbol(e.target.value)}
           placeholder="Enter token symbol"
-          required
         />
         <Input
           label="Token Supply"
@@ -48,15 +69,20 @@ const AppContent = () => {
           value={tokenSupply}
           onChange={(e) => setTokenSupply(e.target.value)}
           placeholder="Enter token supply"
-          required
         />
         <button
           type="submit"
           className="w-full bg-gradient-to-r from-purple-900 to-pink-600 text-white py-3 px-4 rounded-lg hover:opacity-90 transition-opacity font-medium"
+          // onClick={openConnectModal}
         >
           Mint
         </button>
       </form>
+      <ErrorModal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        message={errorMessage}
+      />
     </main>
   );
 };
