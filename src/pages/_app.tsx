@@ -8,8 +8,6 @@ import { sepolia } from 'wagmi/chains';
 import { RainbowKitProvider, getDefaultConfig, Theme, lightTheme} from '@rainbow-me/rainbowkit';
 import merge from 'lodash.merge';
 
-// import { config } from '../wagmi';
-
 const client = new QueryClient();
 
 const myCustomTheme: Theme = merge(lightTheme(), {
