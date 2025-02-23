@@ -1,21 +1,41 @@
 import { useState } from "react";
 import Input from "./Input";
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { useAccount, useWriteContract } from "wagmi"
+import { useAccount, useWriteContract, useWatchContractEvent } from "wagmi"
 import { parseEther } from "viem";
 import ErrorModal from './ErrorModal';
-import {abi} from "../../abi/CraftERC20Token/abi"
+import {abi} from "../abi/CraftERC20Token/abi"
 
 const AppContent = () => {
-  const [tokenName, setTokenName] = useState("");
-  const [tokenSymbol, setTokenSymbol] = useState("");
-  const [tokenSupply, setTokenSupply] = useState("");
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [tokenName, setTokenName] = useState<string>("");
+  const [tokenSymbol, setTokenSymbol] = useState<string>("");
+  const [tokenSupply, setTokenSupply] = useState<string>("");
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [deployedTokens, setDeployedTokens] = useState<Array<{deployer: `0x${string}`, contract: `0x${string}`}>>([])
+
 
   const { openConnectModal } = useConnectModal();
   const { writeContract } = useWriteContract();
   const account = useAccount();
+
+  // Watch for TokenCrafted events
+  useWatchContractEvent({
+    address: '0xD6507E29fA1d984824157a1d8Ec018762e4EE31a',
+    abi,
+    eventName: 'TokenCrafted',
+    onLogs: (logs) => {
+      logs.forEach((log) => {
+        const {tokenDeployer, tokenContract} = log.args
+        if (tokenDeployer && tokenContract) {
+          setDeployedTokens(prev => [...prev, {
+            deployer: tokenDeployer as `0x${string}`,
+            contract: tokenContract as `0x${string}`
+          }])
+        }
+      })
+    },
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +58,7 @@ const AppContent = () => {
       args: [parseEther(tokenSupply), tokenName, tokenSymbol],
     })
   };
+  
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
